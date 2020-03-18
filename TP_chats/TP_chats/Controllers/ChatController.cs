@@ -65,5 +65,39 @@ namespace TP_chats.Controllers
             }
 
         }
+
+
+        // GET: Chat/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var chat = meuteDeChats.FirstOrDefault(c => c.Id == id);
+            if (chat != null)
+            {
+                return View(chat);
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: Chat/Edit/5
+        [HttpPost]
+        public ActionResult Edit(Chat chat)
+        {
+            try
+            {
+                var chatDb = meuteDeChats.FirstOrDefault(c => c.Id == chat.Id);
+                chatDb.Nom = chat.Nom;
+                chatDb.Age = chat.Age;
+                chatDb.Couleur = chat.Couleur;
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
+
     }
 }
