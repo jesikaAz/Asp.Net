@@ -7,6 +7,7 @@
     <ProjectGuid>{6066EAAA-6025-49BC-A1F3-FC6447C42CD9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BO</RootNamespace>
     <AssemblyName>BO</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
