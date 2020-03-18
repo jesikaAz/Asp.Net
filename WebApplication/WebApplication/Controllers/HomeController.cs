@@ -26,5 +26,19 @@ namespace WebApplication.Controllers
 
             return View();
         }
+
+        public ActionResult Bonjour()
+        {
+            return View();
+        }
+
+        [Route("Bienvenue/{nom}")]
+        public ActionResult Welcome(string nom)
+        {
+            ViewBag.Nom = nom; 
+            
+            return View();
+        }
+
     }
 }
