@@ -36,6 +36,7 @@ namespace TP_auteurs
 
         static void Main(string[] args)
         {
+            // initialisation des données
             InitialiserDatas();
 
             // Afficher la liste des prenoms des auteurs dont le nom commence par G
@@ -48,7 +49,15 @@ namespace TP_auteurs
 
             //Afficher l’auteur ayant écrit le plus de livres 
             Console.WriteLine();
-            var moreLivre = ListeLivres.GroupBy(l => l.Auteur).OrderByDescending(l => l.Count()).First().Key;
+            var moreLivre = ListeLivres
+                // grouper les livres par auteur 
+                .GroupBy(l => l.Auteur)
+                // compter le nb de livre et trier par ordre décroissant
+                .OrderByDescending(l => l.Count())
+                // retourne le premier élément de la liste ou une valeur par défaut si aucun élément est trouvé
+                .FirstOrDefault().Key;
+                //.First().Key;
+           
             Console.WriteLine($" -- Auteur avec le plus de livres : {moreLivre.Nom} {moreLivre.Prenom}");
 
             //Afficher le nombre moyen de pages par livre par auteur
@@ -99,20 +108,23 @@ namespace TP_auteurs
 
             //Afficher la liste des livres dont le nombre de pages est supérieur à la moyenne 
             Console.WriteLine();
+            // récupérer le nb de pages dans un livre 
             var moyenne = ListeLivres.Average(l => l.NbPages);
             Console.WriteLine($" -- Livres dont le nb de pages est sup à la moyenne : {moyenne}");
+            // récupérer la liste de livres avec une clause Where
             var livresSupMoyenne = ListeLivres.Where(l => l.NbPages > moyenne);
+            // afficher l'élément
             foreach (var livre in livresSupMoyenne)
             {
                 Console.WriteLine($"Le livre {livre.Titre} avec {livre.NbPages} pages.");
             }
 
-            //Afficher l'auteur ayant écrit le moins de livres 
+            //- Afficher l'auteur ayant écrit le moins de livres
             Console.WriteLine();
-            Console.WriteLine(" -- L'auteur ayant écrit le moins de livres --");
-            var auteurLessLivres = ListeLivres.GroupBy(l => l.Auteur).OrderBy(a => a.Count()).FirstOrDefault().Key;
-            Console.WriteLine($"{auteurLessLivres.Nom} {auteurLessLivres.Prenom}");
-
+            Console.WriteLine("-- Afficher l'auteur ayant écrit le moins de livres");
+            var auteurMoinsDeLivres = ListeAuteurs.OrderBy(a => ListeLivres.Count(l => l.Auteur == a)).FirstOrDefault();
+            Console.WriteLine($"{auteurMoinsDeLivres.Prenom} {auteurMoinsDeLivres.Nom}");
+          
             Console.ReadKey();
         }
     }

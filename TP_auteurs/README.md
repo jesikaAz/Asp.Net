@@ -45,4 +45,4 @@
 > * Le livre **ASP.NET** 4.0 et C# avec 544 pages.
 > * Le livre **C# 4** avec 452 pages.
 
-9. L'auteur ayant écrit le moins de livres **ALESSANDRI Olivier**
+9. L'auteur ayant écrit le moins de livres **Benoit de QUAJOUX**
