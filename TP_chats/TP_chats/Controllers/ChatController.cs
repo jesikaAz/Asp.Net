@@ -21,14 +21,31 @@ namespace TP_chats.Controllers
         public ActionResult Details(int id)
         {
             var chat = meuteDeChats.FirstOrDefault(c => c.Id == id);
-            return View(chat);
+
+            if (chat != null)
+            {
+                return View(chat);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
+
 
         // GET: Chat/Delete/5
         public ActionResult Delete(int id)
         {
             var chat = meuteDeChats.FirstOrDefault(c => c.Id == id);
-            return View(chat);
+
+            if (chat != null)
+            {
+                return View(chat);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: Chat/Delete/5
@@ -46,6 +63,7 @@ namespace TP_chats.Controllers
             {
                 return View();
             }
+
         }
     }
 }
