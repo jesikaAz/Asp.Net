@@ -125,6 +125,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Ingredient.cs" />
+    <Compile Include="Models\Pate.cs" />
+    <Compile Include="Models\Pizza.cs" />
     <Compile Include="Models\PizzaVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
