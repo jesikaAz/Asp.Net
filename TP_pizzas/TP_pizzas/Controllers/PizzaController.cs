@@ -1,60 +1,56 @@
-﻿using BO;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using BO;
 using Utils;
+using TP_pizzas.Models;
 
 namespace TP_pizzas.Controllers
 {
     public class PizzaController : Controller
     {
-
-        private static List<Pizza> pizzas;
-
-        public PizzaController()
-        {
-            if (pizzas == null)
-            {
-                pizzas = FakeDbPizza.Instance.Pizzas;
-            }
-        }
-
         // GET: Pizza
         public ActionResult Index()
         {
-            return View(pizzas);
-        }
-
-
-        // GET: Pizza/Details/5
-        public ActionResult Details(int id)
-        {
-            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
-            if (pizza != null)
-            {
-                return View(pizza);
-            }
-            return RedirectToAction("Index");
+            return View(FakeDbPizza.Instance.Pizzas);
         }
 
         // GET: Pizza/Create
         public ActionResult Create()
         {
-            List<Ingredient> ingredients = Pizza.IngredientsDisponibles;
-            List<Pate> pates = Pizza.PatesDisponibles;
+            PizzaVM vm = new PizzaVM();
 
-            return View();
+            vm.Pates = FakeDbPizza.Instance.PatesDisponible.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
+
+            vm.Ingredients = FakeDbPizza.Instance.IngredientsDisponible.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
+
+            return View(vm);
         }
 
         // POST: Pizza/Create
         [HttpPost]
-        public ActionResult Create(Pizza newPizza)
+        public ActionResult Create(PizzaVM vm)
         {
             try
             {
-                int maxId = pizzas.Max(p => p.Id);
-                newPizza.Id = maxId + 1;
-                pizzas.Add(newPizza);
+                Pizza pizza = vm.Pizza;
+
+                pizza.Pate = FakeDbPizza.Instance.PatesDisponible.FirstOrDefault(x => x.Id == vm.IdPate);
+
+                pizza.Ingredients = FakeDbPizza.Instance.IngredientsDisponible.Where(
+                    x => vm.IdsIngredients.Contains(x.Id))
+                    .ToList();
+
+                // Insuffisant
+                //pizza.Id = FakeDb.Instance.Pizzas.Count + 1;
+
+                pizza.Id = FakeDbPizza.Instance.Pizzas.Count == 0 ? 1 : FakeDbPizza.Instance.Pizzas.Max(x => x.Id) + 1;
+
+                FakeDbPizza.Instance.Pizzas.Add(pizza);
+
                 return RedirectToAction("Index");
             }
             catch
@@ -66,24 +62,42 @@ namespace TP_pizzas.Controllers
         // GET: Pizza/Edit/5
         public ActionResult Edit(int id)
         {
-            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
-            if (pizza != null)
+            PizzaVM vm = new PizzaVM();
+
+            vm.Pates = FakeDbPizza.Instance.PatesDisponible.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
+
+            vm.Ingredients = FakeDbPizza.Instance.IngredientsDisponible.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
+
+            vm.Pizza = FakeDbPizza.Instance.Pizzas.FirstOrDefault(x => x.Id == id);
+
+            if (vm.Pizza.Pate != null)
             {
-                return View(pizza);
+                vm.IdPate = vm.Pizza.Pate.Id;
             }
-            return RedirectToAction("Index");
+
+            if (vm.Pizza.Ingredients.Any())
+            {
+                vm.IdsIngredients = vm.Pizza.Ingredients.Select(x => x.Id).ToList();
+            }
+
+            return View(vm);
         }
 
         // POST: Pizza/Edit/5
         [HttpPost]
-        public ActionResult Edit(Pizza pizza)
+        public ActionResult Edit(PizzaVM vm)
         {
             try
             {
-                Pizza pizzaDb = pizzas.FirstOrDefault(p => p.Id == pizza.Id);
-                pizzaDb.Nom = pizza.Nom;
-                pizzaDb.Pate = pizza.Pate;
-                pizzaDb.Ingredients = pizza.Ingredients;
+                Pizza pizza = FakeDbPizza.Instance.Pizzas.FirstOrDefault(x => x.Id == vm.Pizza.Id);
+                pizza.Nom = vm.Pizza.Nom;
+                pizza.Pate = FakeDbPizza.Instance.PatesDisponible.FirstOrDefault(x => x.Id == vm.IdPate);
+                pizza.Ingredients = FakeDbPizza.Instance.IngredientsDisponible.Where(x => vm.IdsIngredients.Contains(x.Id)).ToList();
+
                 return RedirectToAction("Index");
             }
             catch
@@ -95,12 +109,7 @@ namespace TP_pizzas.Controllers
         // GET: Pizza/Delete/5
         public ActionResult Delete(int id)
         {
-            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
-            if (pizza != null)
-            {
-                return View(pizza);
-            }
-            return RedirectToAction("Index");
+            return View(FakeDbPizza.Instance.Pizzas.FirstOrDefault(x => x.Id == id));
         }
 
         // POST: Pizza/Delete/5
@@ -109,8 +118,9 @@ namespace TP_pizzas.Controllers
         {
             try
             {
-                Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
-                pizzas.Remove(pizza);
+                Pizza pizza = FakeDbPizza.Instance.Pizzas.FirstOrDefault(x => x.Id == id);
+                FakeDbPizza.Instance.Pizzas.Remove(pizza);
+
                 return RedirectToAction("Index");
             }
             catch

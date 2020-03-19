@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using BO;
 
 namespace Utils
 {
     public class FakeDbPizza
     {
-          {
         private static FakeDbPizza _instance;
         static readonly object instanceLock = new object();
 
