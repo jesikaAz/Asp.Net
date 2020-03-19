@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TP_pizzas.Models;
+using BO;
 
-namespace TP_pizzas.Utils
+namespace Utils
 {
     public class FakeDbPizza
     {
@@ -32,7 +32,7 @@ namespace TP_pizzas.Utils
             }
         }
 
-        private List<Pizza> pizzas;
+        private readonly List<Pizza> pizzas;
 
         public List<Pizza> Pizzas
         {
@@ -41,12 +41,26 @@ namespace TP_pizzas.Utils
 
         private List<Pizza> GetPizzas()
         {
-            var i = 1;
             return new List<Pizza>
             {
-                new Pizza{Id=i++,Nom = "Marguarita",Pate = "fine",Ingredient = "Fromage"},
-                new Pizza{Id=i++,Nom = "Hawaienne",Pate = "epaisse",Ingredient = "Poulet"},
-                new Pizza{Id=i++,Nom = "Oceane",Pate = "fine",Ingredient = "Thon"},
+                new Pizza{
+                    Id=1,
+                    Nom = "Hawaienne",
+                    Pate=Pizza.PatesDisponibles.FirstOrDefault(p => p.Id == 1),
+                    Ingredients= new List<Ingredient>{
+                        Pizza.IngredientsDisponibles.FirstOrDefault(i=> i.Id== 5),
+                        Pizza.IngredientsDisponibles.FirstOrDefault(i => i.Id == 8)
+                    }
+                },
+                 new Pizza{
+                    Id=2,
+                    Nom = "Marguerita",
+                    Pate=Pizza.PatesDisponibles.FirstOrDefault(p => p.Id == 3),
+                    Ingredients= new List<Ingredient>{
+                        Pizza.IngredientsDisponibles.FirstOrDefault(i=> i.Id== 7),
+                        Pizza.IngredientsDisponibles.FirstOrDefault(i => i.Id == 1)
+                    }
+                }
             };
         }
     }
