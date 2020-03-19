@@ -1,42 +1,60 @@
-﻿using System;
+﻿using BO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using TP_pizzas.Models;
+using Utils;
 
 namespace TP_pizzas.Controllers
 {
     public class PizzaController : Controller
     {
-        //private static List<Pizza> pizzas;
+
+        private static List<Pizza> pizzas;
+
+        public PizzaController()
+        {
+            if (pizzas == null)
+            {
+                pizzas = FakeDbPizza.Instance.Pizzas;
+            }
+        }
 
         // GET: Pizza
         public ActionResult Index()
         {
-            return View();
+            return View(pizzas);
         }
+
 
         // GET: Pizza/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
+            if (pizza != null)
+            {
+                return View(pizza);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Pizza/Create
         public ActionResult Create()
         {
+            List<Ingredient> ingredients = Pizza.IngredientsDisponibles;
+            List<Pate> pates = Pizza.PatesDisponibles;
+
             return View();
         }
 
         // POST: Pizza/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Pizza newPizza)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                int maxId = pizzas.Max(p => p.Id);
+                newPizza.Id = maxId + 1;
+                pizzas.Add(newPizza);
                 return RedirectToAction("Index");
             }
             catch
@@ -48,17 +66,24 @@ namespace TP_pizzas.Controllers
         // GET: Pizza/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
+            if (pizza != null)
+            {
+                return View(pizza);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Pizza/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Pizza pizza)
         {
             try
             {
-                // TODO: Add update logic here
-
+                Pizza pizzaDb = pizzas.FirstOrDefault(p => p.Id == pizza.Id);
+                pizzaDb.Nom = pizza.Nom;
+                pizzaDb.Pate = pizza.Pate;
+                pizzaDb.Ingredients = pizza.Ingredients;
                 return RedirectToAction("Index");
             }
             catch
@@ -70,7 +95,12 @@ namespace TP_pizzas.Controllers
         // GET: Pizza/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
+            if (pizza != null)
+            {
+                return View(pizza);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Pizza/Delete/5
@@ -79,8 +109,8 @@ namespace TP_pizzas.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                Pizza pizza = pizzas.FirstOrDefault(p => p.Id == id);
+                pizzas.Remove(pizza);
                 return RedirectToAction("Index");
             }
             catch
