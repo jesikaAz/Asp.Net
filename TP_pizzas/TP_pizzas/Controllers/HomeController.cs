@@ -10,7 +10,6 @@ namespace TP_pizzas.Controllers
 {
     public class HomeController : Controller
     {
-        //private Pizza pizza;
         
         public ActionResult Index()
         {

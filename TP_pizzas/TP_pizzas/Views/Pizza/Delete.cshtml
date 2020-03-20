@@ -1,53 +1,18 @@
 ﻿@model BO.Pizza
 
-@{
-    ViewBag.Title = "Delete";
-}
-
 <h2>Suppression</h2>
 
-<h3>Etes-vous sur de vouloir supprimer cela ?</h3>
+<h3>Etes vous sûr de vouloir supprimer cet élément ?</h3>
 <div>
-    <h4>Pizza</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nom)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Pate)
-        </dt>
-        <dd>
-            @if (Model.Pate != null)
-            {
-                @Html.DisplayFor(modelItem => Model.Pate.Nom)
-            }
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Ingredients)
-        </dt>
-        <dd>
-            @if (Model.Ingredients != null)
-            {
-                foreach (var ingredient in Model.Ingredients)
-                {
-                    @Html.DisplayFor(i => ingredient.Nom) <br />
-                }
-            }
-        </dd>
-    </dl>
+    @Html.Partial("_PizzaDetails", Model)
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Supprimer" class="btn btn-default" /> |
+            @Html.ActionLink("Retour à la liste", "Index")
         </div>
     }
 </div>

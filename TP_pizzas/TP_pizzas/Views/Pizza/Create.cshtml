@@ -1,8 +1,5 @@
-﻿@model TP_pizzas.Models.PizzaVM
-
-@{
-    ViewBag.Title = "Create";
-}
+﻿@using TP_Pizza.Extension
+@model TP_pizzas.Models.PizzaVM
 
 <h2>Création d'une pizza</h2>
 
@@ -25,29 +22,25 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Pizza.Pate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.IdPate, Model.Pates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.IdSelectedPate, Model.Pates, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Pizza.Pate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Pizza.Ingredients, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Pizza.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.ListBoxFor(model => model.IdsIngredients, Model.Ingredients, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Pizza.Ingredients, "", new { @class = "text-danger" })
+                @Html.ListBoxFor(model => model.IdSelectedIngredients, Model.Ingredients, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Pizza.Pate, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+        @Html.CustomSubmit("Créer")
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la liste", "Index")
 </div>
 
 @section Scripts {
