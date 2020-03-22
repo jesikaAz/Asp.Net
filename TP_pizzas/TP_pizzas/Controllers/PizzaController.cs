@@ -52,13 +52,13 @@ namespace TP_pizzas.Controllers
             // Si la pizza avait déja une pâte, elle sera selectionnée sur la vue
             if (vm.Pizza.Pate != null)
             {
-                vm.IdSelectedPate = vm.Pizza.Pate.Id;
+                vm.IdPate = vm.Pizza.Pate.Id;
             }
 
             // Si la pizza avait déja des ingrédients, ils seront pré selectionnés sur la vue de modification
             if (vm.Pizza.Ingredients.Any())
             {
-                vm.IdSelectedIngredients = vm.Pizza.Ingredients.Select(i => i.Id).ToList();
+                vm.IdsIngredients = vm.Pizza.Ingredients.Select(i => i.Id).ToList();
             }
             return vm;
         }
@@ -88,37 +88,96 @@ namespace TP_pizzas.Controllers
 
         // POST: Pizza/Create
         [HttpPost]
-        public ActionResult Create(PizzaVM pizzaCreateEditVM)
+        public ActionResult Create(PizzaVM vm)
         {
             try
             {
-                var pizza = pizzaCreateEditVM.Pizza;
+                if (ModelState.IsValid && ValidateVM(vm))
+                {
+                    Pizza pizza = vm.Pizza;
 
-                // On récupère les objets ingrédients de la liste ingredientsDisponibles du controller à partir des ids choisis portés par le ViewModel, puis on les affecte à notre objet pizza
-                pizza.Ingredients = ingredientsDisponibles.Where(i => pizzaCreateEditVM.IdSelectedIngredients.Contains(i.Id)).ToList();
+                    pizza.Pate = patesDisponibles.FirstOrDefault(x => x.Id == vm.IdPate);
 
-                // On récupère l'objet pâte de la liste patesDisponibles du controller à partir de l'id porté par le ViewModel, puis on l'affecte à notre objet pizza
-                pizza.Pate = patesDisponibles.FirstOrDefault(p => p.Id == pizzaCreateEditVM.IdSelectedPate);
+                    pizza.Ingredients = ingredientsDisponibles.Where(i => vm.IdsIngredients.Contains(i.Id)).ToList();
 
-                // on affecte l'Id à partir de l'id max de notre liste de pizzas plus un.
-                // si notre liste est vide, on affecte la valeur 1.
-                pizza.Id = pizzas.Any() ? pizzas.Max(p => p.Id) + 1 : 1;
 
-                // On ajoute la nouvelle pizza à notre liste statique
-                pizzas.Add(pizza);
-                return RedirectToAction("Index");
+                    pizza.Id = pizzas.Count == 0 ? 1 : pizzas.Max(x => x.Id) + 1;
+
+                    pizzas.Add(pizza);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    vm.Pates = patesDisponibles.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
+
+                    vm.Ingredients = ingredientsDisponibles.Select(
+                        x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                        .ToList();
+
+                    return View(vm);
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.WriteLine(ex.Message);
+                vm.Pates = patesDisponibles.Select(
+                x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                .ToList();
 
-                // Si nous avons rencontré une erreur, il faut recharger la page de création, de ce fait il nous faut réalimenter le Viewmodel avant de le passer à la vue
+                vm.Ingredients = ingredientsDisponibles.Select(
+                    x => new SelectListItem { Text = x.Nom, Value = x.Id.ToString() })
+                    .ToList();
 
-                pizzaCreateEditVM.Ingredients = ingredientsDisponibles.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() }).ToList();
-                pizzaCreateEditVM.Pates = patesDisponibles.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() }).ToList();
-                return View(pizzaCreateEditVM);
+                return View(vm);
             }
         }
+
+        private bool ValidateVM(PizzaVM vm)
+        {
+            bool result = true;
+
+            if (vm.IdsIngredients.Count < 2 || vm.IdsIngredients.Count > 5)
+            {
+                ModelState.AddModelError("IdsIngredients", "Il faut sélectionner entre 2 et 5 ingredients");
+                result = false;
+            }
+
+            if (pizzas.FirstOrDefault(x => x.Nom == vm.Pizza.Nom) != null)
+            {
+                ModelState.AddModelError("Pizza.Nom.AlreadyExists", "Il existe déjà une pizza avec ce nom");
+                result = false;
+            }
+
+            foreach (var pizza in pizzas)
+            {
+                if (vm.IdsIngredients.Count == pizza.Ingredients.Count)
+                {
+                    bool isDifferent = false;
+                    List<Ingredient> pizzaDb = pizza.Ingredients.OrderBy(x => x.Id).ToList();
+                    vm.IdsIngredients = vm.IdsIngredients.OrderBy(x => x).ToList();
+                    for (int i = 0; i < vm.IdsIngredients.Count; i++)
+                    {
+                        if (vm.IdsIngredients.ElementAt(i) != pizzaDb.ElementAt(i).Id)
+                        {
+                            isDifferent = true;
+                            break;
+                        }
+                    }
+
+                    if (!isDifferent)
+                    {
+                        ModelState.AddModelError("Ingredient.AlreadyExists", "Il existe déjà une pizza avec ces ingredients");
+                        result = false;
+                    }
+                }
+            }
+
+
+            return result;
+        }
+
 
         // GET: Pizza/Edit/5
         public ActionResult Edit(int id)
@@ -128,21 +187,20 @@ namespace TP_pizzas.Controllers
 
         // POST: Pizza/Edit/5
         [HttpPost]
-        public ActionResult Edit(PizzaVM pizzaCreateEditVM)
+        public ActionResult Edit(PizzaVM vm)
         {
             try
             {
-                var pizza = pizzas.FirstOrDefault(p => p.Id == pizzaCreateEditVM.Pizza.Id);
-                pizza.Nom = pizzaCreateEditVM.Pizza.Nom;
-                pizza.Ingredients = ingredientsDisponibles.Where(i => pizzaCreateEditVM.IdSelectedIngredients.Contains(i.Id)).ToList();
-                pizza.Pate = patesDisponibles.FirstOrDefault(p => p.Id == pizzaCreateEditVM.IdSelectedPate);
+                Pizza pizza = pizzas.FirstOrDefault(x => x.Id == vm.Pizza.Id);
+                pizza.Nom = vm.Pizza.Nom;
+                pizza.Pate = patesDisponibles.FirstOrDefault(x => x.Id == vm.IdPate);
+                pizza.Ingredients = ingredientsDisponibles.Where(x => vm.IdsIngredients.Contains(x.Id)).ToList();
 
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.WriteLine(ex.Message);
-                return View(GetPizzaVM(pizzaCreateEditVM.Pizza.Id));
+                return View();
             }
         }
 
