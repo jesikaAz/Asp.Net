@@ -134,13 +134,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003231346572_Migration.cs" />
-    <Compile Include="Migrations\202003231346572_Migration.designer.cs">
-      <DependentUpon>202003231346572_Migration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003241210029_partie2.cs" />
-    <Compile Include="Migrations\202003241210029_partie2.designer.cs">
-      <DependentUpon>202003241210029_partie2.cs</DependentUpon>
+    <Compile Include="Migrations\202003241339038_MigrationPartie2.cs" />
+    <Compile Include="Migrations\202003241339038_MigrationPartie2.designer.cs">
+      <DependentUpon>202003241339038_MigrationPartie2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SamouraiVM.cs" />
@@ -220,11 +216,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003231346572_Migration.resx">
-      <DependentUpon>202003231346572_Migration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003241210029_partie2.resx">
-      <DependentUpon>202003241210029_partie2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003241339038_MigrationPartie2.resx">
+      <DependentUpon>202003241339038_MigrationPartie2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

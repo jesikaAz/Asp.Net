@@ -7,13 +7,13 @@ namespace TP_dojo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class partie2 : IMigrationMetadata
+    public sealed partial class MigrationPartie2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(partie2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(MigrationPartie2));
         
         string IMigrationMetadata.Id
         {
-            get { return "202003241210029_partie2"; }
+            get { return "202003241339038_MigrationPartie2"; }
         }
         
         string IMigrationMetadata.Source
