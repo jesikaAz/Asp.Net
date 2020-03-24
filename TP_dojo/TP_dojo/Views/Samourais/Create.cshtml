@@ -1,4 +1,4 @@
-﻿@model BO.Samourai
+﻿@model TP_dojo.Models.SamouraiVM
 
 @{
     ViewBag.Title = "Create";
@@ -7,33 +7,47 @@
 <h2>Ajouter un nouveau samouraï</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Samourai</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Force, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Samourai.Force, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Force, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Force, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Samourai.Force, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Samourai.Force, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Samourai.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Nom, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nom, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Samourai.Nom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Samourai.Nom, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Samourai.Arme, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdSelectedArme, Model.Armes.Select(a => new SelectListItem { Text = a.Nom, Value = a.Id.ToString() }), "Aucune arme", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Samourai.ArtsMartiaux, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.IdSelectedArtMartiaux, Model.ArtMartiaux.Select(ar => new SelectListItem { Text = ar.Nom, Value = ar.Id.ToString() }), new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Ajouter" class="btn btn-default" />
+                <input type="submit" value="Créer" class="btn btn-default" />
             </div>
         </div>
     </div>
