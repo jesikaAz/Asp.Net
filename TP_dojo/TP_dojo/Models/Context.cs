@@ -12,5 +12,6 @@ namespace TP_dojo.Models
 
         public DbSet<BO.Arme> Armes { get; set; }
 
+        public System.Data.Entity.DbSet<BO.ArtMartial> ArtMartials { get; set; }
     }
 }
