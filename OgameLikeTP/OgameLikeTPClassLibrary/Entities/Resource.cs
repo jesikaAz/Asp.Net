@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using OgameLikeTPClassLibrary.Validators;
 
 namespace OgameLikeTPClassLibrary.Entities
 {
@@ -15,18 +13,19 @@ namespace OgameLikeTPClassLibrary.Entities
         private DateTime lastUpdate;
         #endregion
         #region Properties
+        [StringLength(20, MinimumLength = 5)]
         public String Name
         {
             get { return name; }
             set { name = value; }
         }
-
+        [IntOverValidator(Min = 0, Max = int.MaxValue)]
         public int? LastQuantity
         {
             get { return lastQuantity; }
             set { lastQuantity = value; }
         }
-
+        [DatetimeLessThanNow]
         public DateTime LastUpdate
         {
             get { return lastUpdate; }
