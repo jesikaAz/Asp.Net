@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OgameLikeTPClassLibrary.Entities
 {
+    [NotMapped]
     public abstract class FunctionBuilding : Building
     {
         #region Private class variable
@@ -24,6 +25,7 @@ namespace OgameLikeTPClassLibrary.Entities
         #endregion
 
         #region Constructors
+     
         public FunctionBuilding()
         {
             this.actions = new List<Action>();
