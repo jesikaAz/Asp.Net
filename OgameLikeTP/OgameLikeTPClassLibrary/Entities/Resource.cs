@@ -25,7 +25,7 @@ namespace OgameLikeTPClassLibrary.Entities
             get { return lastQuantity; }
             set { lastQuantity = value; }
         }
-
+        [DatetimeLessThanNow]
         public DateTime LastUpdate
         {
             get { return lastUpdate; }
