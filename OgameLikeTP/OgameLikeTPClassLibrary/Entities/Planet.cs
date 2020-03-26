@@ -23,13 +23,14 @@ namespace OgameLikeTPClassLibrary.Entities
             get { return name; }
             set { name = value; }
         }
-        [IntOverValidator(Min = 0, Max = int.MaxValue)]
+        [IntValidator(0, int.MaxValue)]
         public int? CaseNb
         {
             get { return caseNb; }
             set { caseNb = value; }
         }
 
+        [PlanetResourcesValidator]
         public virtual List<Resource> Resources
         {
             get { return resources; }

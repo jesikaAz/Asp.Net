@@ -21,7 +21,7 @@ namespace OgameLikeTPClassLibrary.Entities
             get { return name; }
             set { name = value; }
         }
-        [IntOverValidator(Min = 0, Max = int.MaxValue)]
+        [IntValidator(0, int.MaxValue)]
         public virtual int? Level
         {
             get { return level; }
@@ -29,7 +29,6 @@ namespace OgameLikeTPClassLibrary.Entities
         }
 
         [NotMapped]
-        [IntOverValidator(Min = 0, Max = int.MaxValue)]
         public virtual int? CellNb
         {
             get { return level; }
