@@ -2,13 +2,9 @@
 using OgameLikeTP.Models;
 using OgameLikeTPClassLibrary.Entities;
 using OgameLikeTPClassLibrary.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
-namespace ASPNetOgameLikeTP.Controllers
+namespace OgameLikeTP.Controllers
 {
     public class GameAdminController : Controller
     {

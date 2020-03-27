@@ -3,7 +3,7 @@ using OgameLikeTPClassLibrary.Entities.Configurations;
 using System.Collections.Generic;
 
 
-namespace ASPNetOgameLikeTP.Models
+namespace OgameLikeTP.Models
 {
     public class GameAdminVM
     {
