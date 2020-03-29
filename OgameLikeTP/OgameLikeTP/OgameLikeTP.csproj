@@ -151,6 +151,10 @@
     <Compile Include="Migrations\202003261500002_Migration3.designer.cs">
       <DependentUpon>202003261500002_Migration3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003271343231_Migration4.cs" />
+    <Compile Include="Migrations\202003271343231_Migration4.designer.cs">
+      <DependentUpon>202003271343231_Migration4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameAdminVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003261500002_Migration3.resx">
       <DependentUpon>202003261500002_Migration3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003271343231_Migration4.resx">
+      <DependentUpon>202003271343231_Migration4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
